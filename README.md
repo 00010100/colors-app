@@ -8,7 +8,7 @@ Next clone this repo https://github.com/00010100/colors-app.git. You can do this
 ```
 git clone https://github.com/00010100/colors-app.git
 ```
-Then change into that folder
+then change into that folder
 ```
 cd colors-app
 ```
