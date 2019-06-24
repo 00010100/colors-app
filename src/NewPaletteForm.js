@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -77,7 +77,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function NewPaletteForm() {
+export default function NewPaletteForm({ savePalette, history }) {
   const classes = useStyles();
   const [open, setOpen] = useState(true);
   const [currColor, updateCurrColor] = useState('teal');
@@ -117,11 +117,24 @@ export default function NewPaletteForm() {
     setName(e.target.value);
   }
 
+  function handleSubmit() {
+    let newName = 'New Test Palette';
+    const newPalette = {
+      id: newName.toLowerCase().replace(/ /g, '-'),
+      paletteName: newName,
+      colors
+    };
+
+    savePalette(newPalette);
+    history.push('/');
+  }
+
   return (
     <div className={classes.root}>
       <CssBaseline />
       <AppBar
         position="fixed"
+        color="default"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
         })}
@@ -139,6 +152,13 @@ export default function NewPaletteForm() {
           <Typography variant="h6" noWrap>
             Persistent drawer
           </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+          >
+            Save Palette
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer
