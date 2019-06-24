@@ -77,11 +77,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function NewPaletteForm({ savePalette, history }) {
+export default function NewPaletteForm({ savePalette, palettes, history }) {
   const classes = useStyles();
   const [open, setOpen] = useState(true);
   const [currColor, updateCurrColor] = useState('teal');
-  const [newName, setName] = useState('');
+  const [form, updateForm] = useState({
+    colorName: '',
+    paletteName: '',
+  });
   const [colors, setColors] = useState([]);
 
   useEffect(() => {
@@ -91,7 +94,10 @@ export default function NewPaletteForm({ savePalette, history }) {
     ValidatorForm.addValidationRule('isColorUnique', () => (
       colors.every(({ color }) => color !== currColor)
     ));
-  }, [colors, currColor])
+    ValidatorForm.addValidationRule('isPaletteNameUnique', (value) => (
+      palettes.every(({ paletteName }) => paletteName.toLowerCase() !== value.toLowerCase())
+    ));
+  }, [colors, currColor, palettes])
 
   function handleDrawerOpen() {
     setOpen(true);
@@ -104,7 +110,7 @@ export default function NewPaletteForm({ savePalette, history }) {
   function addNewColor() {
     const newColor = {
       color: currColor,
-      name: newName,
+      name: form.colorName,
     }
     setColors([...colors, newColor]);
   }
@@ -114,14 +120,14 @@ export default function NewPaletteForm({ savePalette, history }) {
   };
 
   function handleChange(e) {
-    setName(e.target.value);
+    const { name, value } = e.target;
+    updateForm({ ...form, [name]: value });
   }
 
   function handleSubmit() {
-    let newName = 'New Test Palette';
     const newPalette = {
-      id: newName.toLowerCase().replace(/ /g, '-'),
-      paletteName: newName,
+      id: form.paletteName.toLowerCase().replace(/ /g, '-'),
+      paletteName: form.paletteName,
       colors
     };
 
@@ -152,13 +158,25 @@ export default function NewPaletteForm({ savePalette, history }) {
           <Typography variant="h6" noWrap>
             Persistent drawer
           </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit}
-          >
-            Save Palette
-          </Button>
+          <ValidatorForm onSubmit={handleSubmit}>
+            <TextValidator
+              name="paletteName"
+              value={form.paletteName}
+              onChange={handleChange}
+              validators={['required', 'isPaletteNameUnique']}
+              errorMessages={[
+                'Enter palette name.',
+                'Palette name already used.'
+              ]}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+            >
+              Save Palette
+            </Button>
+          </ValidatorForm>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -183,8 +201,9 @@ export default function NewPaletteForm({ savePalette, history }) {
         </div>
         <ChromePicker color={currColor} onChangeComplete={changeColor} />
         <ValidatorForm onSubmit={addNewColor}>
-          <TextValidator 
-            value={newName}
+          <TextValidator
+            name="colorName"
+            value={form.colorName}
             onChange={handleChange}
             validators={['required', 'isColorNameUnique', 'isColorUnique']}
             errorMessages={[
