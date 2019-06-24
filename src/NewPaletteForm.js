@@ -1,17 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
+import {
+  Drawer,
+  CssBaseline,
+  AppBar,
+  Toolbar,
+  Typography,
+  Divider,
+  IconButton,
+  Button,
+} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import { ChromePicker } from 'react-color';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
-const drawerWidth = 240;
+import DraggableColorBox from './DraggableColorBox';
+
+const drawerWidth = 400;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -53,7 +60,8 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    height: 'calc(100vh - 64px)',
+    // padding: theme.spacing(3),
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -71,7 +79,19 @@ const useStyles = makeStyles(theme => ({
 
 export default function NewPaletteForm() {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
+  const [currColor, updateCurrColor] = useState('teal');
+  const [newName, setName] = useState('');
+  const [colors, setColors] = useState([]);
+
+  useEffect(() => {
+    ValidatorForm.addValidationRule('isColorNameUnique', (value) => (
+      colors.every(({ name }) => name.toLowerCase() !== value.toLowerCase())
+    ));
+    ValidatorForm.addValidationRule('isColorUnique', () => (
+      colors.every(({ color }) => color !== currColor)
+    ));
+  }, [colors, currColor])
 
   function handleDrawerOpen() {
     setOpen(true);
@@ -79,6 +99,22 @@ export default function NewPaletteForm() {
 
   function handleDrawerClose() {
     setOpen(false);
+  }
+
+  function addNewColor() {
+    const newColor = {
+      color: currColor,
+      name: newName,
+    }
+    setColors([...colors, newColor]);
+  }
+
+  function changeColor(newColor) {
+    updateCurrColor(newColor.hex);
+  };
+
+  function handleChange(e) {
+    setName(e.target.value);
   }
 
   return (
@@ -120,6 +156,32 @@ export default function NewPaletteForm() {
           </IconButton>
         </div>
         <Divider />
+        <Typography variant="h4">Design Your Palette</Typography>
+        <div>
+          <Button variant="contained" color="secondary">Clear Palette</Button>
+          <Button variant="contained" color="primary">Random Color</Button>
+        </div>
+        <ChromePicker color={currColor} onChangeComplete={changeColor} />
+        <ValidatorForm onSubmit={addNewColor}>
+          <TextValidator 
+            value={newName}
+            onChange={handleChange}
+            validators={['required', 'isColorNameUnique', 'isColorUnique']}
+            errorMessages={[
+              'Enter a color name.',
+              'Color name must be unique.',
+              'Color already used.'
+            ]}
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            style={{ backgroundColor: currColor }}
+          >
+            Add Color
+          </Button>
+        </ValidatorForm>
       </Drawer>
       <main
         className={clsx(classes.content, {
@@ -127,7 +189,9 @@ export default function NewPaletteForm() {
         })}
       >
         <div className={classes.drawerHeader} />
-        
+        {colors.map(({ color, name }) => (
+          <DraggableColorBox backgroundColor={color} key={color} name={name} />
+        ))}
       </main>
     </div>
   );
