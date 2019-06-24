@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { filter, toLower, all, equals, not, map, replace, trim } from 'ramda';
+import { filter, toLower, all, equals, not, replace, trim } from 'ramda';
+import arrayMove from 'array-move';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -17,7 +18,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { ChromePicker } from 'react-color';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
-import DraggableColorBox from './DraggableColorBox';
+import DraggableColorList from './DraggableColorList';
 
 const drawerWidth = 400;
 
@@ -136,6 +137,10 @@ export default function NewPaletteForm({ savePalette, palettes, history }) {
     history.push('/');
   }
 
+  function onSortEnd({ oldIndex, newIndex }) {
+    setColors([...arrayMove(colors, oldIndex, newIndex)]);
+  }
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -229,14 +234,12 @@ export default function NewPaletteForm({ savePalette, palettes, history }) {
         })}
       >
         <div className={classes.drawerHeader} />
-        {map(({ color, name }) => (
-          <DraggableColorBox
-            key={color}
-            backgroundColor={color}
-            name={name}
-            handleDelete={handleDeleteColor(name)}
-          />
-        ), colors)}
+        <DraggableColorList
+          colors={colors}
+          handleDeleteColor={handleDeleteColor}
+          axis="xy"
+          onSortEnd={onSortEnd}
+        />
       </main>
     </div>
   );
