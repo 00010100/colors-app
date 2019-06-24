@@ -42,7 +42,7 @@ export default class Palette extends Component {
         <div className="Palette-colors">
           {colorBoxes}
         </div>
-        <PaletteFooter />
+        <PaletteFooter paletteName={paletteName} emoji={emoji} />
       </div>
     )
   }
