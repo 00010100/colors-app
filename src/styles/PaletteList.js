@@ -17,7 +17,18 @@ export default {
   nav: {
     display: 'flex',
     width: '100%',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    color: 'white',
+
+    '& a': {
+      color: 'white',
+      textDecoration: 'none',
+
+      '&:hover': {
+        color: 'rgba(255,255,255,0.5)',
+      }
+    }
   },
   palettes: {
     boxSizing: 'border-box',
