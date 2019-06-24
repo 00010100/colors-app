@@ -1,6 +1,6 @@
 import chroma from 'chroma-js';
 
-const styles = {
+export default {
   ColorBox: {
     width: '20%',
     height: ({ showingFullPalette }) => showingFullPalette ? '25%' : '50%',
@@ -125,29 +125,4 @@ const styles = {
     transitionDelay: '0.1s',
     zIndex: 11,
   }
-}
-
-export default styles;
-
-/* .ColorBox.go-back {
-  background-color: black;
-}
-
-.back-button {
-  width: 100px;
-  height: 30px;
-  position: absolute;
-  display: inline-block;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  outline: none;
-  background: rgba(255,255,255, 0.3);
-  font-size: 1rem;
-  line-height: 30px;
-  color: white;
-  text-transform: uppercase;
-  border: none;
-  text-decoration: none;
-} */
+};
