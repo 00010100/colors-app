@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { filter, toLower, all, equals, not, map, replace, trim } from 'ramda';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -89,23 +90,23 @@ export default function NewPaletteForm({ savePalette, palettes, history }) {
 
   useEffect(() => {
     ValidatorForm.addValidationRule('isColorNameUnique', (value) => (
-      colors.every(({ name }) => name.toLowerCase() !== value.toLowerCase())
+      all(({ name }) => not(equals(toLower(name), toLower(value))), colors)
     ));
     ValidatorForm.addValidationRule('isColorUnique', () => (
-      colors.every(({ color }) => color !== currColor)
+      all(({ color }) => not(equals(color, currColor)), colors)
     ));
     ValidatorForm.addValidationRule('isPaletteNameUnique', (value) => (
-      palettes.every(({ paletteName }) => paletteName.toLowerCase() !== value.toLowerCase())
+      all(({ paletteName }) => not(equals(toLower(paletteName), toLower(value))), palettes)
     ));
   }, [colors, currColor, palettes])
 
-  function handleDrawerOpen() {
-    setOpen(true);
-  }
+  const handleDrawerOpen = () => setOpen(true);
 
-  function handleDrawerClose() {
-    setOpen(false);
-  }
+  const handleDrawerClose = () => setOpen(false);
+
+  const handleDeleteColor = (colorName) => () => {
+    setColors([...filter(({ name }) => not(equals(name, colorName)), colors)]);
+  };
 
   function addNewColor() {
     const newColor = {
@@ -126,7 +127,7 @@ export default function NewPaletteForm({ savePalette, palettes, history }) {
 
   function handleSubmit() {
     const newPalette = {
-      id: form.paletteName.toLowerCase().replace(/ /g, '-'),
+      id: replace(/ /g, '-', trim(toLower(form.paletteName))),
       paletteName: form.paletteName,
       colors
     };
@@ -228,9 +229,14 @@ export default function NewPaletteForm({ savePalette, palettes, history }) {
         })}
       >
         <div className={classes.drawerHeader} />
-        {colors.map(({ color, name }) => (
-          <DraggableColorBox backgroundColor={color} key={color} name={name} />
-        ))}
+        {map(({ color, name }) => (
+          <DraggableColorBox
+            key={color}
+            backgroundColor={color}
+            name={name}
+            handleDelete={handleDeleteColor(name)}
+          />
+        ), colors)}
       </main>
     </div>
   );

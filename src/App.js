@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { find, propEq } from 'ramda';
 import { Route, Switch } from 'react-router-dom';
 
 import { generatePalette } from './colorHelpers';
@@ -11,7 +12,7 @@ import seedColors from './seedColors';
 export default function App() {
   const [palettes, setPalettes] = useState(seedColors); 
 
-  const findPalette = (id) => palettes.find((palette) => palette.id === id);
+  const findPalette = (id) => find(propEq('id', id))(palettes);
   const savePalette = (newPalette) => setPalettes([...palettes, newPalette]);
 
   return (
