@@ -8,9 +8,27 @@ import {
 import { Button } from '@material-ui/core';
 import { ChromePicker } from 'react-color';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import { withStyles } from '@material-ui/styles';
 
-export default function ColorPickerForm({
-  paletteIsFull, addNewColor, colors
+const styles = {
+  picker: {
+    width: '100% !important',
+    marginTop: '2rem',
+  },
+  addColor: {
+    width: '100%',
+    padding: '1rem',
+    marginTop: '1rem',
+    fontSize: '2rem',
+  },
+  colorInput: {
+    width: '100%',
+    height: '70px',
+  }
+};
+
+function ColorPickerForm({
+  paletteIsFull, addNewColor, colors, classes,
 }) {
   const [currColor, updateCurrColor] = useState('teal');
   const [colorName, updateColorName] = useState('');
@@ -43,12 +61,20 @@ export default function ColorPickerForm({
 
   return (
     <div>
-      <ChromePicker color={currColor} onChangeComplete={changeColor} />
+      <ChromePicker
+        color={currColor}
+        onChangeComplete={changeColor}
+        className={classes.picker}
+      />
         <ValidatorForm onSubmit={handleSubmit}>
           <TextValidator
+            margin="normal"
             value={colorName}
+            placeholder="Enter a color name"
             onChange={handleChange}
+            variant="filled"
             validators={['required', 'isColorNameUnique', 'isColorUnique']}
+            className={classes.colorInput}
             errorMessages={[
               'Enter a color name.',
               'Color name must be unique.',
@@ -61,6 +87,7 @@ export default function ColorPickerForm({
             color="primary"
             style={{ backgroundColor: paletteIsFull ? 'rgba(0, 0, 0, 0.12)' : currColor }}
             disabled={paletteIsFull}
+            className={classes.addColor}
           >
             {paletteIsFull ? 'Palette Full' : 'Add Color'}
           </Button>
@@ -68,3 +95,5 @@ export default function ColorPickerForm({
     </div>
   )
 }
+
+export default withStyles(styles)(ColorPickerForm);

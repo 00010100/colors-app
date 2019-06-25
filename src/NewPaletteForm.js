@@ -34,23 +34,6 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
   },
-  appBar: {
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
   hide: {
     display: 'none',
   },
@@ -60,6 +43,8 @@ const useStyles = makeStyles(theme => ({
   },
   drawerPaper: {
     width: drawerWidth,
+    display: 'flex',
+    alignItems: 'center',
   },
   drawerHeader: {
     display: 'flex',
@@ -85,14 +70,29 @@ const useStyles = makeStyles(theme => ({
     }),
     marginLeft: 0,
   },
+  container: {
+    width: '90%',
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttons: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  button: {
+    width: '49%',
+  }
 }));
 
 export default function NewPaletteForm({ savePalette, palettes, history }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [colors, setColors] = useState(head(palettes).colors);
-
-  
 
   const handleDrawerOpen = () => setOpen(true);
 
@@ -102,10 +102,7 @@ export default function NewPaletteForm({ savePalette, palettes, history }) {
     setColors([...filter(({ name }) => not(equals(name, colorName)), colors)]);
   };
 
-  function addNewColor(newColor) {
-    setColors([...colors, newColor]);
-  }
-
+  const addNewColor = (newColor) => setColors([...colors, newColor]);
 
   const handleSubmit = (paletteName) => () => {
     const newPalette = {
@@ -143,7 +140,6 @@ export default function NewPaletteForm({ savePalette, palettes, history }) {
     <div className={classes.root}>
       <PaletteFormNav
         open={open}
-        classes={classes}
         palettes={palettes}
         handleSubmit={handleSubmit}
         handleDrawerOpen={handleDrawerOpen}
@@ -163,29 +159,33 @@ export default function NewPaletteForm({ savePalette, palettes, history }) {
           </IconButton>
         </div>
         <Divider />
-        <Typography variant="h4">Design Your Palette</Typography>
-        <div>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={clearPalette}
-          >
-            Clear Palette
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={addRandomColor}
-            disabled={paletteIsFull}
-          >
-            Random Color
-          </Button>
+        <div className={classes.container}>
+          <Typography variant="h4" gutterBottom>Design Your Palette</Typography>
+          <div className={classes.buttons}>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={clearPalette}
+              className={classes.button}
+            >
+              Clear Palette
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={addRandomColor}
+              disabled={paletteIsFull}
+              className={classes.button}
+            >
+              Random Color
+            </Button>
+          </div>
+          <ColorPickerForm
+            paletteIsFull={paletteIsFull}
+            addNewColor={addNewColor}
+            colors={colors}
+          />
         </div>
-        <ColorPickerForm
-          paletteIsFull={paletteIsFull}
-          addNewColor={addNewColor}
-          colors={colors}
-        />
       </Drawer>
       <main
         className={clsx(classes.content, {
