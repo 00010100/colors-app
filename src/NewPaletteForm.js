@@ -104,12 +104,12 @@ export default function NewPaletteForm({ savePalette, palettes, history }) {
 
   const addNewColor = (newColor) => setColors([...colors, newColor]);
 
-  const handleSubmit = (paletteName) => () => {
+  const handleSubmit = (palette) => {
     const newPalette = {
-      id: replace(/ /g, '-', trim(toLower(paletteName))),
-      paletteName,
-      colors
-    };
+      ...palette,
+      id: replace(/ /g, '-', trim(toLower(palette.paletteName))),
+      colors,
+    }
 
     savePalette(newPalette);
     history.push('/');

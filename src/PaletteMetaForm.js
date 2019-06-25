@@ -9,9 +9,12 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@material-ui/core';
+import { Picker } from 'emoji-mart';
+import 'emoji-mart/css/emoji-mart.css';
 
 export default function PaletteMetaForm({ palettes, handleSubmit, onCloseForm }) {
   const [paletteName, updatePaletteName] = useState('');
+  const [stage, updateStage] = useState('form');
 
   useEffect(() => {
     ValidatorForm.addValidationRule('isPaletteNameUnique', (value) => (
@@ -21,11 +24,19 @@ export default function PaletteMetaForm({ palettes, handleSubmit, onCloseForm })
 
   const handleChange = (e) => updatePaletteName(e.target.value);
 
+  const showEmojiPicker = () => updateStage('emoji');
+
+  const savePalette = (emoji) => handleSubmit({ paletteName, emoji: emoji.native });
+
   return (
-    <div>
-      <Dialog open={true} onClose={onCloseForm} aria-labelledby="form-dialog-title">
+    <>
+      <Dialog open={stage === 'emoji'} onClose={onCloseForm}>
+        <DialogTitle id="form-dialog-title">Pick a Palette emoji</DialogTitle>
+        <Picker onSelect={savePalette} />
+      </Dialog>
+      <Dialog open={stage === 'form'} onClose={onCloseForm} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Choose a Palette Name</DialogTitle>
-        <ValidatorForm onSubmit={handleSubmit(paletteName)}>
+        <ValidatorForm onSubmit={showEmojiPicker}>
           <DialogContent>
             <DialogContentText>
               Please enter a name for your new beautiful palette. Make sure it's unique!
@@ -57,6 +68,6 @@ export default function PaletteMetaForm({ palettes, handleSubmit, onCloseForm })
           </DialogActions>
         </ValidatorForm>
       </Dialog>
-    </div>
+    </>
   );
 }
