@@ -4,12 +4,17 @@ import { withStyles } from '@material-ui/styles';
 
 import MiniPalette from './MiniPalette';
 
-import styles from './styles/PaletteList';
+import styles from './styles/PaletteListStyles';
 
 class PaletteList extends Component {
   goToPalette = (id) => () => {
     this.props.history.push(`/palette/${id}`);
   };
+
+  handleDelete = (id) => (e) => {
+    e.stopPropagation();
+    this.props.deletePalette(id);
+  }
 
   render() {
     const { palettes, classes } = this.props;
@@ -18,7 +23,7 @@ class PaletteList extends Component {
       <div className={classes.root}>
         <div className={classes.container}>
           <nav className={classes.nav}>
-            <h1>React colors</h1>
+            <h1 className={classes.heading}>React colors</h1>
             <Link to="/palette/new">Create Palette</Link>
           </nav>
           <div className={classes.palettes}>
@@ -26,6 +31,7 @@ class PaletteList extends Component {
               <MiniPalette
                 {...palette}
                 key={palette.id}
+                handleDelete={this.handleDelete(palette.id)}
                 handleClick={this.goToPalette(palette.id)}
               />
             ))}

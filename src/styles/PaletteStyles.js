@@ -1,21 +1,43 @@
+import sizes from './sizes';
+
 export default {
   Palette: {
     height: '100vh',
     display: 'flex',
     flexDirection: 'column',
-    overflow: 'hidden',
   },
   colors: {
     height: '90%',
+    display: 'grid',
+    gridTemplateColumns: 'repeat(5, 1fr)',
+    gridTemplateRows: ({ showingFullPalette }) => (
+      showingFullPalette ? 'repeat(4, 25%)' : 'repeat(2, 50%)'
+    ),
+
+    [sizes.down('lg')]: {
+      gridTemplateColumns: 'repeat(4, 1fr)',
+      gridTemplateRows: ({ showingFullPalette }) => (
+        showingFullPalette ? 'repeat(5, 20%)' : 'repeat(3, 33.3333%)'
+      ),
+    },
+
+    [sizes.down('md')]: {
+      gridTemplateColumns: 'repeat(2, 1fr)',
+      gridTemplateRows: ({ showingFullPalette }) => (
+        showingFullPalette ? 'repeat(10, 10%)' : 'repeat(5, 20%)'
+      )
+    },
+
+    [sizes.down('sm')]: {
+      gridTemplateColumns: '1fr',
+      gridTemplateRows: ({ showingFullPalette }) => (
+        showingFullPalette ? 'repeat(20, 5%)' : 'repeat(10, 10%)'
+      )
+    },
   },
   goBack: {
-    width: '20%',
-    height: '50%',
-    margin: '0 auto',
-    display: 'inline-block',
     position: 'relative',
     cursor: 'pointer',
-    marginBottom: '-3.5px',
     backgroundColor: 'black',
 
     '& a': {
@@ -35,6 +57,6 @@ export default {
       textTransform: 'uppercase',
       border: 'none',
       textDecoration: 'none',
-    }
+    },
   },
 };

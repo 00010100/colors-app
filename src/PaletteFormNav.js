@@ -71,7 +71,7 @@ export default function PaletteFormNav({
             onClick={onShowForm}
             className={classes.navBtn}
           >
-            Save Palette
+            Save
           </Button>
         </div>
       </AppBar>

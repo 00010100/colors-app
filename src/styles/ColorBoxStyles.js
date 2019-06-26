@@ -1,19 +1,16 @@
 import chroma from 'chroma-js';
 
+import sizes from './sizes';
+
 export default {
   ColorBox: {
-    width: '20%',
-    height: ({ showingFullPalette }) => showingFullPalette ? '25%' : '50%',
-    margin: '0 auto',
-    display: 'inline-block',
     position: 'relative',
     cursor: 'pointer',
-    marginBottom: '-3.5px',
 
     '&:hover button': {
       opacity: 1,
       transition: '0.25s',
-    }
+    },
   },
   copyText: {
     color: ({ background }) => (
@@ -24,6 +21,7 @@ export default {
     color: ({ background }) => (
       chroma(background).luminance() <= 0.08 ? 'white' : 'black'
     ),
+    paddingLeft: 10,
   },
   seeMore: {
     backgroundColor: 'rgba(255,255,255, 0.3)',
@@ -62,11 +60,13 @@ export default {
     opacity: 0,
   },
   boxContent: {
+    display: 'flex',
+    alignItems: 'center',
     width: '100%',
     left: 0,
     bottom: 0,
+    height: 30,
     position: 'absolute',
-    padding: '10px',
     color: 'black',
     letterSpacing: '1px',
     textTransform: 'uppercase',
@@ -111,6 +111,10 @@ export default {
       textAlign: 'center',
       marginBottom: 0,
       padding: '1rem',
+
+      [sizes.down('xs')]: {
+        fontSize: '6rem',
+      },
     },
 
     '& p': {

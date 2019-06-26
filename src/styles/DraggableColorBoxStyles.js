@@ -1,17 +1,12 @@
 export default {
   root: {
-    width: '20%',
-    height: '25%',
-    margin: '0 auto',
-    display: 'inline-block',
     position: 'relative',
     cursor: 'pointer',
-    marginBottom: '-5px',
 
     '&:hover svg': {
       color: 'white',
       transform: 'scale(1.5)',
-    }
+    },
   },
   boxContent: {
     width: '100%',

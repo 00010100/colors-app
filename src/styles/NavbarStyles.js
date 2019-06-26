@@ -1,3 +1,5 @@
+import sizes from './sizes';
+
 export default {
   Navbar: {
     display: 'flex',
@@ -18,6 +20,10 @@ export default {
     '& a': {
       textDecoration: 'none',
       color: 'black',
+    },
+
+    [sizes.down('xs')]: {
+      display: 'none',
     }
   },
   selectContainer: {
@@ -47,5 +53,9 @@ export default {
     '& .rc-slider-rail': {
       height: '8px',
     },
+
+    [sizes.down('md')]: {
+      width: '150px',
+    }
   }
 };

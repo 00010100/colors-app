@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { find, propEq } from 'ramda';
+import { find, propEq, reject, equals } from 'ramda';
 import { Route, Switch } from 'react-router-dom';
 
 import { generatePalette } from './colorHelpers';
@@ -19,13 +19,20 @@ export default function App() {
 
   const findPalette = (id) => find(propEq('id', id))(palettes);
   const savePalette = (newPalette) => setPalettes([...palettes, newPalette]);
+  const deletePalette = (id) => setPalettes((pal) => reject((p) => equals(p.id, id), pal));
 
   return (
     <Switch>
       <Route
         exact
         path="/"
-        render={routeProps => <PaletteList palettes={palettes} {...routeProps} />}
+        render={routeProps => (
+          <PaletteList
+            palettes={palettes}
+            deletePalette={deletePalette}
+            {...routeProps} 
+          />
+        )}
       />
       <Route
         exact
@@ -39,6 +46,7 @@ export default function App() {
         path="/palette/:id"
         render={routeProps => (
           <Palette
+            showingFullPalette
             palette={generatePalette(findPalette(routeProps.match.params.id))}
           />
         )}
@@ -48,6 +56,7 @@ export default function App() {
         path="/palette/:paletteId/:colorId"
         render={routeProps => (
           <SingleColorPalette
+            showingFullPalette={false}
             colorId={routeProps.match.params.colorId}
             palette={generatePalette(findPalette(routeProps.match.params.paletteId))}
           />
