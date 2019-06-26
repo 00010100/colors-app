@@ -1,17 +1,17 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { withStyles } from '@material-ui/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import styles from './styles/MiniPaletteStyles';
 
-function MiniPalette({
+const MiniPalette = memo(({
   classes,
   paletteName,
   emoji,
   colors,
   handleClick,
   openDialog,
-}) {
+}) => {
   const miniColorBoxes = colors.map(color => (
     <div
       className={classes.miniColor}
@@ -32,6 +32,6 @@ function MiniPalette({
       </h5>
     </div>
   );
-}
+});
 
 export default withStyles(styles)(MiniPalette);

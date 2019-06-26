@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/styles';
 import {
@@ -20,7 +20,7 @@ import MiniPalette from './MiniPalette';
 
 import styles from './styles/PaletteListStyles';
 
-function PaletteList({ palettes, classes, deletePalette, history }) {
+const PaletteList = memo(({ palettes, classes, deletePalette, history }) => {
   const [openDeleteDialog, updateDeleteDialog] = useState(false);
   const [delId, setDelId] = useState(null);
 
@@ -89,6 +89,6 @@ function PaletteList({ palettes, classes, deletePalette, history }) {
       </Dialog>
     </div>
   )
-}
+});
 
 export default withStyles(styles)(PaletteList);

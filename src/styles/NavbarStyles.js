@@ -54,7 +54,7 @@ export default {
       height: '8px',
     },
 
-    [sizes.down('md')]: {
+    [sizes.down('sm')]: {
       width: '150px',
     }
   }
