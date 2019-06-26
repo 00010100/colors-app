@@ -9,7 +9,7 @@ import {
   IconButton,
   Button,
 } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
+import AddToPhotosIcon from '@material-ui/icons/AddToPhotos';
 
 import PaletteMetaForm from './PaletteMetaForm';
 
@@ -44,9 +44,11 @@ export default function PaletteFormNav({
             aria-label="Open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            className={clsx(classes.menuButton, open && classes.hide)}
+            className={clsx(classes.menuButton, {
+              [classes.hide]: open,
+            })}
           >
-            <MenuIcon />
+            <AddToPhotosIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
             Create a Palette

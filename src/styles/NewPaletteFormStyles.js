@@ -6,9 +6,6 @@ export default makeStyles(theme => ({
   root: {
     display: 'flex',
   },
-  hide: {
-    display: 'none',
-  },
   drawer: {
     width: DRAWER_WIDTH,
     flexShrink: 0,
@@ -22,13 +19,14 @@ export default makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     padding: '0 8px',
+    width: '100%',
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
   },
   content: {
     flexGrow: 1,
     height: 'calc(100vh - 64px)',
-    // padding: theme.spacing(3),
+    padding: 0,
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
