@@ -10,7 +10,7 @@ function MiniPalette({
   emoji,
   colors,
   handleClick,
-  handleDelete,
+  openDialog,
 }) {
   const miniColorBoxes = colors.map(color => (
     <div
@@ -22,7 +22,7 @@ function MiniPalette({
 
   return (
     <div className={classes.root} onClick={handleClick}>
-      <div className={classes.delete} onClick={handleDelete}>
+      <div className={classes.delete} onClick={openDialog}>
         <DeleteIcon className={classes.deleteIcon} />
       </div>
       <div className={classes.colors}>{miniColorBoxes}</div>
