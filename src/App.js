@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { find, propEq } from 'ramda';
 import { Route, Switch } from 'react-router-dom';
 
@@ -10,7 +10,12 @@ import SingleColorPalette from './SingleColorPalette';
 import seedColors from './seedColors';
 
 export default function App() {
-  const [palettes, setPalettes] = useState(seedColors); 
+  const savedPalettes = JSON.parse(window.localStorage.getItem('palettes'));
+  const [palettes, setPalettes] = useState(savedPalettes || seedColors);
+
+  useEffect(() => {
+    window.localStorage.setItem('palettes', JSON.stringify(palettes));
+  }, [palettes]);
 
   const findPalette = (id) => find(propEq('id', id))(palettes);
   const savePalette = (newPalette) => setPalettes([...palettes, newPalette]);
