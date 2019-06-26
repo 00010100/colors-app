@@ -47,13 +47,13 @@ function PaletteList({ palettes, classes, deletePalette, history }) {
       <div className={classes.container}>
         <nav className={classes.nav}>
           <h1 className={classes.heading}>React colors</h1>
-          <Link to="/palette/new">Create Palette</Link>
+          <p className={classes.subHead}><Link to="/palette/new">Create Palette</Link></p>
         </nav>
           <TransitionGroup className={classes.palettes}>
             {palettes.map(palette => (
               <CSSTransition
                 key={palette.id}
-                classNames="fade"
+                classNames="page"
                 timeout={500}
               >
                 <MiniPalette

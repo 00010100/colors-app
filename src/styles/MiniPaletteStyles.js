@@ -12,6 +12,9 @@ export default {
     }
   },
   colors: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(20%, 1fr))',
+    gridTemplateRows: 'repeat(auto-fill, minmax(25%, 1fr))',
     backgroundColor: '#dae1e4',
     width: '100%',
     height: '150px',
@@ -32,10 +35,8 @@ export default {
     fontSize: '1.5rem'
   },
   miniColor: {
-    width: '20%',
-    height: '25%',
-    display: 'inline-block',
-    margin: '0 auto -4px',
+    width: '100%',
+    height: '100%',
     position: 'relative'
   },
   delete: {

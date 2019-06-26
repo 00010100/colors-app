@@ -29,7 +29,10 @@ export default function PaletteMetaForm({ palettes, handleSubmit, onCloseForm })
 
   const toBack = () => updateStage('form');
 
-  const savePalette = () => handleSubmit({ paletteName, emoji });
+  const savePalette = () => {
+    handleSubmit({ paletteName, emoji });
+    updateStage(null);
+  }
 
   const selectEmoji = (emoji) => setEmoji(emoji.native);
 
