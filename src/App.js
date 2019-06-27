@@ -75,6 +75,17 @@ export default function App() {
                 </Page>
               )}
             />
+            <Route
+              render={routeProps => (
+                <Page>
+                  <PaletteList
+                    palettes={palettes}
+                    deletePalette={deletePalette}
+                    {...routeProps} 
+                  />
+                </Page>
+              )}
+            />
           </Switch>
         </CSSTransition>
       </TransitionGroup>

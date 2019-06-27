@@ -9,7 +9,9 @@ import {
   head,
   flatten,
   map,
-  pipe
+  pipe,
+  any,
+  length,
 } from 'ramda';
 import arrayMove from 'array-move';
 import clsx from 'clsx';
@@ -62,21 +64,30 @@ export default function NewPaletteForm({ savePalette, palettes, history }) {
   }
 
   const clearPalette = () => setColors([]);
+
+  const checkDuplicate = ({ name }) => any(c => equals(c.name, name), colors);
   
   const addRandomColor = () => {
     const allColors = pipe(
       map((p) => p.colors),
       flatten
-    )(palettes);
+      )(palettes);
 
-    const randomIndex = Math.floor(Math.random() * allColors.length);
+    let randomIndex;
+    let randomColor;
+    let isDuplicateColor = true;
 
-    const randomColor = allColors[randomIndex];
-
+      
+    while (isDuplicateColor) {
+      randomIndex = Math.floor(Math.random() * length(allColors));
+      randomColor = allColors[randomIndex];
+      isDuplicateColor = checkDuplicate(randomColor);
+    } 
+    
     setColors([...colors, randomColor]);
   }
 
-  const paletteIsFull = colors.length >= maxColors;
+  const paletteIsFull = length(colors) >= maxColors;
 
   return (
     <div className={classes.root}>
