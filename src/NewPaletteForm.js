@@ -25,6 +25,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import DraggableColorList from './DraggableColorList';
 import PaletteFormNav from './PaletteFormNav';
 import ColorPickerForm from './ColorPickerForm';
+import seedColors from './seedColors';
 
 import useStyles from './styles/NewPaletteFormStyles';
 
@@ -33,7 +34,7 @@ const maxColors = 20;
 export default function NewPaletteForm({ savePalette, palettes, history }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [colors, setColors] = useState(head(palettes).colors);
+  const [colors, setColors] = useState(head(seedColors).colors);
 
   const handleDrawerOpen = () => setOpen(true);
 

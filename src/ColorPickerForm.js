@@ -51,7 +51,7 @@ function ColorPickerForm({
         onChangeComplete={changeColor}
         className={classes.picker}
       />
-        <ValidatorForm onSubmit={handleSubmit}>
+        <ValidatorForm onSubmit={handleSubmit} instantValidate={false}>
           <TextValidator
             margin="normal"
             value={colorName}

@@ -53,7 +53,7 @@ const PaletteList = memo(({ palettes, classes, deletePalette, history }) => {
             {palettes.map(palette => (
               <CSSTransition
                 key={palette.id}
-                classNames="page"
+                classNames="fade"
                 timeout={500}
               >
                 <MiniPalette

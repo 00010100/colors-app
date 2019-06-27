@@ -1,3 +1,5 @@
+import chroma from 'chroma-js';
+
 export default {
   root: {
     position: 'relative',
@@ -14,7 +16,9 @@ export default {
     bottom: 0,
     position: 'absolute',
     padding: '10px',
-    color: 'rgba(0,0,0,0,.5)',
+    color: ({ backgroundColor }) => (
+      chroma(backgroundColor).luminance() <= 0.08 ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)'
+    ),
     letterSpacing: '1px',
     textTransform: 'uppercase',
     fontSize: '12px',
